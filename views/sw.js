@@ -16,12 +16,25 @@ self.addEventListener('install', event => {
 	// - Make sure SW waits until it should stop waiting!
 	//
 	// - Bonus: cache only what you have visited
-})
+	event.waitUntil(
+			caches.open('v1').then(function(cache) {
+				return cache.addAll([
+					'/workshops',
+					'/workshops/serviceworkers',
+					'/workshops/service-workers/15-september-2017',
+					'/fronteers.css',
+					'/index.js',
+					'/logo.png',
+					'/bullet.png',
+				]);
+			})
+		)
+});
+
 
 self.addEventListener('activate', event => {
 	console.log('sw activate', event)
 })
-
 //
 // Functional events
 //
@@ -33,7 +46,13 @@ self.addEventListener('fetch', event => {
 	// - ...or go to the network
 	//
 	// - Bonus: serve an offline page
-})
+
+	event.respondWith(
+		caches.match(event.request).then(function(response) {
+			return response || fetch(event.request);
+		})
+	);
+});
 
 self.addEventListener('sync', event => {
 	console.log('user agent sync', event)
