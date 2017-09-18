@@ -1,0 +1,49 @@
+Fronteers / Voorhoede - Workshop Service Workers Takeaways
+
+1) SW  "Service workers essentially act as proxy servers that sit between web applications, and the browser and network (when available).: 
+
+- Promise based so only promise based API's can be used with SW (no LocalStorage, no XHR!)
+- event driven
+- runs under a separate browser thread 
+- only runs on https or localhost
+- has no DOM access
+- MDN => https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API
+
+2) PWA {
+
+P: "Progressive Enhancement"
+
+}
+so Service Workers are a "p" too, won't work without JS, won't work without SW support 
+https://jakearchibald.github.io/isserviceworkerready/  
+So don't make your app dependent on it, always provide fallback
+
+3) Google dev tools , application tab => service workers tab
+- dev each service worker dev environment on a separate port to 'easify' SW debugging in dev tools
+- SW debugging can be al little hard
+  - sometimes sync not always registered directly
+  - sometimes refresh or SW clear required
+  - breakpoints can not be set on every part of you Service Worker (needs more elaboration...)
+- the SW is a separate API so some objects are under a different scope in the console e.g. SyncEvent after pushing Sync in the SW tab
+
+4) Fetch is ES6 promise based API for ajax requests based upon jQuery $ajax (who said "we don't need jQuery?") 
+https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
+
+5) indexedDB to store in-browser complexer data, like forms  => Jake Archibald created promise bases indexDB which can be used w/ SW => https://github.com/jakearchibald/idb-keyval/blob/master/idb-keyval.js
+- localStorage only 25MB data , indexedDB 22.914 MB depending on available diskspace, you have a responsibility as a dev to use this space carefully because you have to share it with other domains PWA's ...
+- indexedDB can be be used as an intemediary between the SW and default Javascript thread
+
+6) SW take aways
+- reference self (the Window) => "Changed "this" to "self" to guarantee addressing to global SW scope" see also MDN sample pages https://github.com/mdn/sw-test/commit/0326f70c5ae1baa94993bc8f14fd1b75f23ffe44
+- event driven, so addEventListener('install' || 'activate' || 'fetch' || 'sync' || 'push'....
+- event.waitUntil can be used on all above SW events, it's parameter is a Promise (which is a function). The event will only be completed once the Promise 'settles'=> https://developer.mozilla.org/en-US/docs/Web/API/ExtendableEvent/waitUntil
+- use skipWaiting() at install event so a new SW will be activated immediately upon install which is handy when you update your SW. Your new SW is activated regardless of any other active SW (makes yours and SW life easier) => https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerGlobalScope/skipWaiting
+
+
+7) SW resources:
+- Mozilla SW cookbook => https://serviceworke.rs/
+- Google https://github.com/GoogleChrome/sw-toolbox 
+- updated version of Google SW toolbox => https://workboxjs.org/
+- no SW but just offline with a handy toolbox? https://www.talater.com/upup/
+- Cross platform push notifications: https://onesignal.com/
+
