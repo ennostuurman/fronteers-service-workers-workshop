@@ -34,6 +34,12 @@ https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
 - indexedDB can be be used as an intemediary between the SW and default Javascript thread
 
 6) SW take aways
+- check and register SW in webpage 
+
+if ('serviceWorker' in navigator) {
+				navigator.serviceWorker.register('/sw.js')
+					.then(() => console.log('sw registered'))
+			}
 - reference self (the Window) => "Changed "this" to "self" to guarantee addressing to global SW scope" see also MDN sample pages https://github.com/mdn/sw-test/commit/0326f70c5ae1baa94993bc8f14fd1b75f23ffe44
 - event driven, so addEventListener('install' || 'activate' || 'fetch' || 'sync' || 'push'....
 - event.waitUntil can be used on all above SW events, it's parameter is a Promise (which is a function). The event will only be completed once the Promise 'settles'=> https://developer.mozilla.org/en-US/docs/Web/API/ExtendableEvent/waitUntil
